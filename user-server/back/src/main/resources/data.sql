@@ -24,8 +24,8 @@
 # insert into users (user_id, username, password, name, phone, job) values (19, 'Wakefield', 19, 'Bernier', '412-207-3902', 'Accountant IV');
 # insert into users (user_id, username, password, name, phone, job) values (20, 'Erek', 20, 'Witchalls', '419-420-6565', 'Budget/Accounting Analyst I');
 #
-# insert into boards (board_id, board_name, description) values (1, 'REVIEW','리뷰');
-# insert into boards (board_id, board_name, description) values (2, 'QNA','큐엔에이');
+# insert into boards (board_id, title, description) values (1, 'REVIEW','리뷰');
+# insert into boards (board_id, title, description) values (2, 'QNA','큐엔에이');
 #
 #
 # insert into articles (article_id, title, content, user_id, board_id) values (1, 'Agent Red', 'java.com', 2, 1);

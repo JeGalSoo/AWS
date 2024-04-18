@@ -32,7 +32,7 @@ public class ArticleController {
     private final ArticleService service;
 
     @PostMapping(path = "/save")
-        public ResponseEntity<Messenger> save(@RequestBody Article article){
+        public ResponseEntity<Messenger> save(@RequestBody ArticleDto article){
         return ResponseEntity.ok(service.save(article));
     }
 
@@ -42,7 +42,7 @@ public class ArticleController {
     }
 
     @PostMapping("/modify")
-    public ResponseEntity<Messenger> modify(@RequestBody Article article){
+    public ResponseEntity<Messenger> modify(@RequestBody ArticleDto article){
         return ResponseEntity.ok(service.modify(article));
     }
 

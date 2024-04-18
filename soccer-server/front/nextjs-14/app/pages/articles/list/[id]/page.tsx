@@ -14,6 +14,8 @@ import { PG } from "@/redux/common/enums/PG";
 import { findAllArticles } from "@/redux/features/articles/article.service";
 import { findArticleById } from "@/app/component/articles/service/article.service";
 import { getArticleById } from "@/app/component/articles/service/article-slice";
+import ArticleColumns from "@/app/component/articles/module/columns";
+import MoveButton from "@/app/atoms/button/MoveButton";
 
 
 const ArticleListPage: NextPage = (props:any) => {
@@ -26,8 +28,10 @@ const ArticleListPage: NextPage = (props:any) => {
   }else{
       console.log('allUser is undefined')
   }
+  const newArticle =()=>{}
 
   useEffect(()=>{
+    console.log(props.params.id)
       dispatch(findArticleById(props.params.id))
   },[])
 
@@ -36,11 +40,11 @@ const ArticleListPage: NextPage = (props:any) => {
     <div className="flex flex-col h-screen items-center justify-center w-full">
       <div className="flex overflow-x-scroll snap-x snap-mandatory max-w-6xl no-scrollbar">
       </div>
-      <h2>게시판 글쓰기</h2>
+      <h2>게시판 글쓰기</h2><MoveButton text="글쓰기" path={`${PG.ARTICLE}/save`}/>
         <Box sx={{ height: 400, width: '60%' }}>
      {article && <DataGrid
         rows={article}
-        columns={Columns()}
+        columns={ArticleColumns()}
         initialState={{
           pagination: {
             paginationModel: {

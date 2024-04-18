@@ -8,7 +8,7 @@ import com.example.demo.common.service.QueryService;
 import java.util.List;
 import java.util.Optional;
 
-public interface ArticleService extends CommandService<Article>, QueryService<ArticleDto> {
+public interface ArticleService extends CommandService<ArticleDto>, QueryService<ArticleDto> {
 
     default Article dtoToEntity(ArticleDto dto) {
         return Article.builder()

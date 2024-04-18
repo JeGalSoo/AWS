@@ -66,7 +66,7 @@ const HomePage:NextPage=()=> {
           setCookie({},'token',logindata.token,{ httpOnly: false, path: '/' })
           console.log('서버에서 넘어온 메시지'+parseCookies().message)
           console.log('서버에서 넘어온 토큰'+parseCookies().token)
-        router.push(PG.BOARD+"/card")
+        router.push(`${PG.BOARD}/list`)
       }else{
         console.log('LOGIN FAIL')
       }

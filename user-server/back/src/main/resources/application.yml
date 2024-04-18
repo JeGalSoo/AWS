@@ -3,7 +3,7 @@ spring:
     name: api
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql:// 43.203.3.189:3306/turingdb?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql:// 43.203.3.189:3306/turingdb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: root
   sql:
@@ -22,7 +22,7 @@ spring:
             '[non_contextual_creation]': true
         '[format_sql]': true
     show-sql: true
-    open-in-view: false
+#    open-in-view: true
 logging:
   level:
     org:

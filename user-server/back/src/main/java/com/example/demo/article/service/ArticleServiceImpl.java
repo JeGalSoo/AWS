@@ -3,7 +3,9 @@ package com.example.demo.article.service;
 import com.example.demo.article.model.Article;
 import com.example.demo.article.model.ArticleDto;
 import com.example.demo.article.repository.ArticleRepository;
+import com.example.demo.board.model.Board;
 import com.example.demo.common.component.Messenger;
+import com.example.demo.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,17 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public Messenger save(Article article) {
-        if(existsById(article.getId()))re.save(article);
+    public Messenger save(ArticleDto article) {
+        Article newArticle = Article.builder()
+                .writer(User.builder()
+                        .username(article.getWriterId())
+                        .build())
+                .content(article.getDescription())
+                .board(Board.builder()
+                        .id(article.getBoardId())
+                        .build())
+                .build();
+        if(existsById(article.getId()))re.save(newArticle);
         return new Messenger();
     }
 
@@ -30,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Messenger modify(Article article) {
+    public Messenger modify(ArticleDto article) {
         return new Messenger();
     }
 
