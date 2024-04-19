@@ -41,6 +41,12 @@ public class UserController {
         return ResponseEntity.ok(service.findById(id));
     }
 
+    @GetMapping( path = "/check")
+    public ResponseEntity<Messenger> findByUsername(@RequestParam String username){
+        log.info(username);
+        return ResponseEntity.ok(service.existsByUsername(username));
+    }
+
     @GetMapping("")
     public ResponseEntity<Long> count(){
         return ResponseEntity.ok(service.count());

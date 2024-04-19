@@ -2,20 +2,27 @@ package com.example.demo.common.component;
 
 import com.example.demo.user.model.User;
 import com.example.demo.user.model.UserDto;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.ParserBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
+import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
+import java.net.HttpCookie;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+
+import static java.net.HttpCookie.parse;
 
 @Component
 @Slf4j
@@ -43,21 +50,14 @@ public class JwtProvider {
                 .claim("userId", userDto.getId())
                 .compact();
 
+
         log.info("로그인성공으로 발급된 토큰 " + toke);
-        String a = Jwts.parser()
-                .decryptWith(secretkey)
-                .build()
-                .toString();
-        log.info("로그인성공으로 발급된 토큰 " + a);
         return toke;
     }
 
-    public List<UserDto> pashingToken(String token){
-        List<UserDto> list = new ArrayList<>();
-        list.add(UserDto.builder()
-
-                .build());
-        return list;
-    }
+//    public JWTdecoder getAuthentication(String token){
+//        Claims claims = (Claims) parse(token);
+//        return null;
+//    }
 
 }

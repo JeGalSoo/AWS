@@ -6,13 +6,17 @@ import com.example.demo.common.component.PageRequestVo;
 import com.example.demo.user.model.User;
 import com.example.demo.user.model.UserDto;
 import com.example.demo.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
@@ -82,9 +86,23 @@ public class UserServiceImpl implements UserService {
         return dto;
     }
 
+    @Transactional
     @Override
     public Messenger login(UserDto userDto) {
-        boolean flag = repository.findByUsername(userDto.getUsername()).getPassword().equals(userDto.getPassword());
+        User user = repository.findByUsername(userDto.getUsername());
+        String token = jwtProvider.createToken(entityToDto(user));
+        boolean flag = user.getPassword().equals(userDto.getPassword());
+        repository.modifyTokenById(token,user.getId());
+        String[] chunks = token.split("\\.");
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+        String header = new String(decoder.decode(chunks[0]));
+        String payload = new String(decoder.decode(chunks[1]));
+
+        System.out.printf("token header : "+header);
+        System.out.printf("token body : "+payload);
+
+
+
         return Messenger.builder()
                 .message(flag? "SUCCESS":"FAIL")
                 .token(flag?jwtProvider.createToken(userDto):"None")
@@ -95,5 +113,18 @@ public class UserServiceImpl implements UserService {
 //        }else{
 //            return Messenger.builder().message("FAIL").build();
 //        }
+    }
+
+    @Override
+    public Messenger findByUsername(String username) {
+        return null;
+    }
+
+    @Override
+    public Messenger existsByUsername(String username) {
+        log.info(username);
+        return Messenger.builder()
+                .message(repository.existsByUsername(username)?"true":"false")
+                .build();
     }
 }
