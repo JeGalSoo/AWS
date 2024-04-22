@@ -13,5 +13,6 @@ import java.util.List;
 public class Messenger {
     private String message;
     private int status;
-    private String token;
+    private String accessToken;
+    private String refreshToken;
 }

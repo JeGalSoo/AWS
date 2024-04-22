@@ -1,18 +1,15 @@
 package com.example.demo.user.service;
 
-import com.example.demo.common.component.JwtProvider;
+import com.example.demo.common.component.security.JwtProvider;
 import com.example.demo.common.component.Messenger;
-import com.example.demo.common.component.PageRequestVo;
 import com.example.demo.user.model.User;
 import com.example.demo.user.model.UserDto;
 import com.example.demo.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 
 
@@ -93,19 +90,11 @@ public class UserServiceImpl implements UserService {
         String token = jwtProvider.createToken(entityToDto(user));
         boolean flag = user.getPassword().equals(userDto.getPassword());
         repository.modifyTokenById(token,user.getId());
-        String[] chunks = token.split("\\.");
-        Base64.Decoder decoder = Base64.getUrlDecoder();
-        String header = new String(decoder.decode(chunks[0]));
-        String payload = new String(decoder.decode(chunks[1]));
-
-        System.out.printf("token header : "+header);
-        System.out.printf("token body : "+payload);
-
-
+        log.info(jwtProvider.getPayload(token));
 
         return Messenger.builder()
                 .message(flag? "SUCCESS":"FAIL")
-                .token(flag?jwtProvider.createToken(userDto):"None")
+                .accessToken(flag?jwtProvider.createToken(userDto):"None")
                 .build();
 //        User user = re.findByUsername(userDto.getUsername());
 //        if(userDto.getPassword().equals(user.getPassword())){
@@ -114,6 +103,8 @@ public class UserServiceImpl implements UserService {
 //            return Messenger.builder().message("FAIL").build();
 //        }
     }
+
+
 
     @Override
     public Messenger findByUsername(String username) {

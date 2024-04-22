@@ -1,7 +1,7 @@
 package com.example.demo.user;
 
 import com.example.demo.common.component.Messenger;
-import com.example.demo.common.component.PageRequestVo;
+import com.example.demo.common.component.pagination.PageRequestVo;
 import com.example.demo.user.model.User;
 import com.example.demo.user.model.UserDto;
 import com.example.demo.user.service.UserService;

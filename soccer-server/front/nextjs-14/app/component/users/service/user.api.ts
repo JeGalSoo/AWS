@@ -1,4 +1,5 @@
-import AxiosConfig, { instance } from "../../common/configs/axios-config"
+import AxiosConfig from "@/redux/common/configs/axios-config"
+import instance from "../../common/configs/axios-config"
 
 export const findAllUsersAPI = async (page: number) =>{
     try{
@@ -52,7 +53,7 @@ export const modifyByIdAPI = async (props: any) =>{
 export const loginAPI = async (data:any) => {
     try{
         const response = await instance.post('/users/login',
-            data,AxiosConfig())
+            data)
         console.log(response.data)
         return response.data
     }catch(error){
@@ -66,7 +67,20 @@ export const existIdAPI = async (username:any) => {
         const response = await instance.get('/users/check',{
             params: {username}
         })
-        console.log('테스트입니다'+response.data.message)
+        console.log('existId테스트입니다'+response.data.message)
+        return response.data.message
+    }catch(error){
+        console.log(error)
+        return error
+    }
+}
+
+export const logoutAPI = async() => {
+    try{
+        const response = await instance.get('/users/check',{
+            params: {}
+        })
+        console.log('logout테스트입니다'+response.data.message)
         return response.data.message
     }catch(error){
         console.log(error)

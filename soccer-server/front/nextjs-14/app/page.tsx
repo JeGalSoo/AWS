@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import axios from 'axios';
 import Link from "next/link";
 import './globals.css'
@@ -21,6 +21,7 @@ import { jwtDecode } from "jwt-decode";
 
 const SERVER = 'http://localhost:8080'
 const HomePage: NextPage = () => {
+  const passwordRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch()
   const logindata = useSelector(getAuth)
   const existdata = useSelector(getExistId)
@@ -28,10 +29,10 @@ const HomePage: NextPage = () => {
   const [isWrongPw, setIsWrongPw] = useState('')
   const [isCheckId, setIsCheckId] = useState('')
   const [user, setUser] = useState({} as IUser)//뜻 : IUser user = new IUser(보안의 기능도 있음-그냥 각자 선언해서 받으면 보여짐)
-  
+
   const router = useRouter()
 
- // const handleUsername = (e: any) => {
+  // const handleUsername = (e: any) => {
   //   setUser({
   //     ...user,username:e.target.value})//...은 ...뒤에오는 형식을 상속한다는 뜻
   //   const ID_CHECK = /^[a-zA-Z]+[]{5,19}$/g;
@@ -56,39 +57,68 @@ const HomePage: NextPage = () => {
       setIsWrongId("true")
     }
   }
- 
+
   const handlePassword = (e: any) => {
     const PW_CHECK = /^[0-9]$/g
     // const PW_CHECK = /^[a-zA-Z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]+[a-zA-Z\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]{5,19}$/g;
     if (PW_CHECK.test(e.target.value)) {
-    setUser({
-      ...user, password: e.target.value
-    })} else {
+      setUser({
+        ...user, password: e.target.value
+      })
+    } else {
       setIsWrongPw("true")
     }
   }
 
 
 
-  useEffect(() => {
-    if (existdata === "false") {
-      setIsCheckId("true")
-    }
-    if (logindata.message === "SUCCESS") {
-      setCookie({}, 'message', logindata.message, { httpOnly: false, path: '/' })
-      setCookie({}, 'token', logindata.token, { httpOnly: false, path: '/' })
-      console.log('서버에서 넘어온 메시지' + parseCookies().message)
-      console.log('서버에서 넘어온 토큰' + parseCookies().token)
-      console.log('토큰을 decode한 내용 : ' + JSON.stringify(jwtDecode<any>(parseCookies().token)))
-      // router.push(`${PG.BOARD}/list`)
-    } else {
-      console.log('LOGIN FAIL')
-    }
-  }, [logindata])
+  // useEffect(() => {
+  //   if (existdata === "false") {
+  //     setIsCheckId("true")
+  //   }
+  //   if (logindata.message === "SUCCESS") {
+  //     setCookie({}, 'message', logindata.message, { httpOnly: false, path: '/' })
+  //     setCookie({}, 'token', logindata.token, { httpOnly: false, path: '/' })
+  //     console.log('서버에서 넘어온 메시지' + parseCookies().message)
+  //     console.log('서버에서 넘어온 토큰' + parseCookies().token)
+  //     console.log('토큰을 decode한 내용 : ' + JSON.stringify(jwtDecode<any>(parseCookies().token)))
+  //     // router.push(`${PG.BOARD}/list`)
+  //   } else {
+  //     console.log('LOGIN FAIL')
+  //   }
+  // }, [logindata])
 
   const handleSubmit = () => {
     dispatch(existId(user.username))
-    dispatch(loginUser(user))
+      .then((res: any) => {
+        console.log('1111'+res.payload)
+        if (res.payload === 'true') {
+          dispatch(loginUser(user))
+            .then((res: any) => {
+              setCookie({}, 'message', res.payload.message, { httpOnly: false, path: '/' })
+              setCookie({}, 'accessToken', res.payload.accessToken, { httpOnly: false, path: '/' })
+              console.log('서버에서 넘어온 메시지' + parseCookies().message)
+              console.log('서버에서 넘어온 토큰' + parseCookies().accessToken)
+              console.log('토큰을 decode한 내용 : ' + JSON.stringify(jwtDecode<any>(parseCookies().accessToken)))
+              router.push(`${PG.BOARD}/list`)
+            })
+            .catch((err: any) => {
+              console.log('로그인 실패')
+            })
+        } else {
+          console.log('아이디가 존재하지 않습니다')
+          setIsWrongId('false')
+          setIsCheckId('false')
+        }
+      })
+      .catch((err: any) => { })
+      .finally(() => {
+        console.log('최종적으로 반드시 이뤄져야 할 로직')
+      })
+    //dispatch(loginUser(user))
+    if (passwordRef.current) {
+      passwordRef.current.value = "";
+    }
   }
 
 
@@ -115,9 +145,9 @@ const HomePage: NextPage = () => {
               required
             />
           </div>
-          {isWrongId !== ''&& (isWrongId=="true" ?
-          (<pre><h6 className="text-red-500">잘못된 형식입니다.</h6></pre>):
-          (<pre><h6 className="text-blue-500">올바른 형식입니다.</h6></pre>))}
+          {isWrongId !== '' && (isWrongId == "true" ?
+            (<pre><h6 className="text-red-500">잘못된 형식입니다.</h6></pre>) :
+            (<pre><h6 className="text-blue-500">올바른 형식입니다.</h6></pre>))}
           {isCheckId && (<pre>
             <h6 className="text-red-500">아이디틀림.</h6>
           </pre>)}
@@ -128,13 +158,14 @@ const HomePage: NextPage = () => {
               </label>
             </div>
             <input
+              ref={passwordRef}
               onChange={handlePassword}
               className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-2 focus:outline-blue-700"
               type="password"
             />
-            {isWrongPw !== ''&& (isWrongPw=="true" ?
-          (<pre><h6 className="text-red-500">잘못된 형식입니다.</h6></pre>):
-          (<pre><h6 className="text-blue-500">올바른 형식입니다.</h6></pre>))}
+            {isWrongPw !== '' && (isWrongPw == "true" ?
+              (<pre><h6 className="text-red-500">잘못된 형식입니다.</h6></pre>) :
+              (<pre><h6 className="text-blue-500">올바른 형식입니다.</h6></pre>))}
             <a
               href="#"
               className="text-xs text-gray-500 hover:text-gray-900 text-end w-full mt-2"

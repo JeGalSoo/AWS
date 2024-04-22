@@ -1,11 +1,9 @@
 package com.example.demo.article;
 
-import com.example.demo.article.model.Article;
 import com.example.demo.article.model.ArticleDto;
 import com.example.demo.article.service.ArticleService;
 import com.example.demo.common.component.Messenger;
-import com.example.demo.common.component.PageRequestVo;
-import com.example.demo.user.model.UserDto;
+import com.example.demo.common.component.pagination.PageRequestVo;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Slf4j

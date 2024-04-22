@@ -1,4 +1,4 @@
-package com.example.demo.common.component;
+package com.example.demo.common.component.security;
 
 import com.example.demo.user.model.User;
 import com.example.demo.user.model.UserDto;
@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.ParserBuilder;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +41,7 @@ public class JwtProvider {
     }
 
     public String createToken(UserDto userDto) {
-        String toke = Jwts.builder()
+        String token = Jwts.builder()
                 .issuer(issuer)
                 .signWith(secretkey)
                 .expiration(Date.from(expiredDate))
@@ -51,8 +52,27 @@ public class JwtProvider {
                 .compact();
 
 
-        log.info("로그인성공으로 발급된 토큰 " + toke);
-        return toke;
+        log.info("로그인성공으로 발급된 토큰 " + token);
+        return token;
+    }
+
+    public String getPayload(String token) {
+        String[] chunks = token.split("\\.");
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+        String header = new String(decoder.decode(chunks[0]));
+        String payload = new String(decoder.decode(chunks[1]));
+
+        System.out.printf("accessToken header : "+header);
+        System.out.printf("accessToken body : "+payload);
+
+        return header;
+    }
+
+
+
+    public String extractTokenFromHeader(HttpServletRequest request) {
+
+        return null;
     }
 
 //    public JWTdecoder getAuthentication(String token){
