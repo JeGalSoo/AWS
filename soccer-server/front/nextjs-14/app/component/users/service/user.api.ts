@@ -3,7 +3,7 @@ import instance from "../../common/configs/axios-config"
 
 export const findAllUsersAPI = async (page: number) =>{
     try{
-        const response = await instance.get('/users/list',{
+        const response = await instance().get('/users/list',{
             params: {page, limit: 10}
         })
         return response.data
@@ -15,7 +15,7 @@ export const findAllUsersAPI = async (page: number) =>{
 
 export const findByIdAPI = async (id: any) =>{
     try{
-        const response = await instance.get('/users/detail',{
+        const response = await instance().get('/users/detail',{
             params: {id}
         })
         return response.data
@@ -27,7 +27,7 @@ export const findByIdAPI = async (id: any) =>{
 
 export const deleteByIdAPI = async (id: any) =>{
     try{
-        const response = await instance.get('/users/delete',{
+        const response = await instance().get('/users/delete',{
             params: {id}
         })
         return response.data
@@ -39,7 +39,7 @@ export const deleteByIdAPI = async (id: any) =>{
 
 export const modifyByIdAPI = async (props: any) =>{
     try{
-        return (await instance.post('/users/modify',props)).data
+        return (await instance().post('/users/modify',props)).data
         // const response = await instance.post('/users/modify',{
         //     data: {props}
         // })
@@ -52,7 +52,7 @@ export const modifyByIdAPI = async (props: any) =>{
 
 export const loginAPI = async (data:any) => {
     try{
-        const response = await instance.post('/users/login',
+        const response = await instance().post('/auth/login',
             data)
         console.log(response.data)
         return response.data
@@ -64,7 +64,7 @@ export const loginAPI = async (data:any) => {
 
 export const existIdAPI = async (username:any) => {
     try{
-        const response = await instance.get('/users/check',{
+        const response = await instance().get('/auth/check',{
             params: {username}
         })
         console.log('existId테스트입니다'+response.data.message)
@@ -77,7 +77,7 @@ export const existIdAPI = async (username:any) => {
 
 export const logoutAPI = async() => {
     try{
-        const response = await instance.get('/users/check',{
+        const response = await instance().get('/users/logout',{
             params: {}
         })
         console.log('logout테스트입니다'+response.data.message)

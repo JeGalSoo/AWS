@@ -90,11 +90,11 @@ public class UserServiceImpl implements UserService {
         String token = jwtProvider.createToken(entityToDto(user));
         boolean flag = user.getPassword().equals(userDto.getPassword());
         repository.modifyTokenById(token,user.getId());
-        log.info(jwtProvider.getPayload(token));
+        jwtProvider.printPayload(token);
 
         return Messenger.builder()
                 .message(flag? "SUCCESS":"FAIL")
-                .accessToken(flag?jwtProvider.createToken(userDto):"None")
+                .accessToken(flag?token:"None")
                 .build();
 //        User user = re.findByUsername(userDto.getUsername());
 //        if(userDto.getPassword().equals(user.getPassword())){
@@ -117,5 +117,11 @@ public class UserServiceImpl implements UserService {
         return Messenger.builder()
                 .message(repository.existsByUsername(username)?"true":"false")
                 .build();
+    }
+
+    @Override
+    public Messenger logout(String accessToken) {
+        repository.modifyTokenByToken(accessToken);
+        return Messenger.builder().build();
     }
 }

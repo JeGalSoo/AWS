@@ -21,5 +21,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("update users set token=:token where id = :id")
     public void modifyTokenById(String token, Long id);
 
+    @Modifying //싱태변화시킬때 사용
+    @Query("update users set token='' where token = :token")
+    public void modifyTokenByToken(String token);
+
     boolean existsByUsername(String username);
 }

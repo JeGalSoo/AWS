@@ -1,8 +1,8 @@
-import AxiosConfig, { instance } from "../../common/configs/axios-config"
+import instance from "../../common/configs/axios-config"
 
 export const findAllArticlesAPI = async (page: number) =>{
     try{
-        const response = await instance.get('/articles/list',{
+        const response = await instance().get('/articles/list',{
             params: {page, limit: 10}
         })
         return response.data
@@ -15,7 +15,7 @@ export const findAllArticlesAPI = async (page: number) =>{
 
 export const findArticleByIdAPI = async (id: number) =>{
     try{
-        const response = await instance.get('/articles/detail',{
+        const response = await instance().get('/articles/detail',{
             params: {id}
         })
         return response.data
@@ -28,7 +28,7 @@ export const findArticleByIdAPI = async (id: number) =>{
 
 export const saveAPI = async (props: any) =>{
     try{
-        const response = await instance.post('/articles/save',props)
+        const response = await instance().post('/articles/save',props)
         console.log(props)
         return response.data
     }catch(error){

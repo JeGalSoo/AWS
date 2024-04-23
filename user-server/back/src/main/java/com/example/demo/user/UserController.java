@@ -93,5 +93,14 @@ public class UserController {
         return ResponseEntity.ok(service.login(userDto));
     }
 
+    @GetMapping("/logout")
+    public ResponseEntity<Messenger> logout(@RequestHeader("Authorization") String accessToken){
+//        log.info("logout request : {}", accessToken);
+//        Long id = 1L;
+//        Boolean flag = service.logout(id);
+        return ResponseEntity.ok(
+                service.logout(accessToken)
+        );
+    }
 
 }

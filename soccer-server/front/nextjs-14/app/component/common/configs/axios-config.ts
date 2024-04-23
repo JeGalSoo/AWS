@@ -1,6 +1,6 @@
 import AxiosConfig from '@/redux/common/configs/axios-config'
 import { ConstructionOutlined } from '@mui/icons-material'
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import { Console } from 'console'
 import { parseCookies } from 'nookies'
 
@@ -14,16 +14,18 @@ import { parseCookies } from 'nookies'
 //         }
 //     }
 // }
-
-
+export default function instance(){
 const instance = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_URL})
+setInterceptor(instance)
+return instance
+}
 
-instance.interceptors.request.use(
+
+export const setInterceptor = (inputInstance:AxiosInstance)=>{
+    inputInstance.interceptors.request.use(
     (config)=>{
-        const accessToken = parseCookies().accessToken;
-        console.log('axios interceptor가 cookie에서 token을 추출함' + accessToken)
         config.headers["Content-Type"] = "application/json"
-        config.headers['Authorization'] = `Bearer ${accessToken}`
+        config.headers['Authorization'] = `Bearer ${parseCookies().accessToken}`
         return config
     },
     (error)=>{
@@ -32,14 +34,12 @@ instance.interceptors.request.use(
     }
 )
 
-instance.interceptors.response.use(
+inputInstance.interceptors.response.use(
     (response)=>{
-        if(response.status === 404){
+        if(response.status === 404)
             console.log('axios interceptor의 response에서 발생한 에러부분 : 토큰이 없어서 404로 넘어감')
-        }
         return response
     },
 )
-
-
-export default instance
+return inputInstance
+}

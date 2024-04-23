@@ -41,4 +41,6 @@ public interface UserService extends CommandService<User>, QueryService<UserDto>
     Messenger findByUsername(String username);
 
     Messenger existsByUsername(String username);
+
+    Messenger logout(String accessToken);
 }
