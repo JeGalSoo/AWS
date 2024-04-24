@@ -72,7 +72,7 @@ public class JwtProvider {
         return Jwts.parser().verifyWith(secretkey).build().parseSignedClaims(accessToken).getPayload();
     }
 
-    public void printPayload(String accessToken){
+    public String printPayload(String accessToken){
         String[] chunks = accessToken.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
 
@@ -81,6 +81,7 @@ public class JwtProvider {
 
         log.info("JWT 프로바이더 Access Token Header : "+header);
         log.info("JWT 프로바이더 Access Token Payload : "+payload);
+        return payload;
     }
 
 //    public JWTdecoder getAuthentication(String token){

@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDto> findById(Long id) {
-        Optional<UserDto> dto = Optional.ofNullable(entityToDto(Objects.requireNonNull(repository.findById(id).orElse(null))));
+        var dto = Optional.ofNullable(entityToDto(Objects.requireNonNull(repository.findById(id).orElse(null))));
         return dto;
     }
 
@@ -71,14 +71,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<?> findByName(String name) {
-        List<UserDto> dto = new ArrayList<>();
+        var dto = new ArrayList<>();
 //        dto.add(re.findByUsername(name));
         return dto;
     }
 
     @Override
     public List<?> findByJob(String job) {
-        List<UserDto> dto = new ArrayList<>();
+        var dto = new ArrayList<>();
         dto.add(repository.findUsersByJob(job));
         return dto;
     }
@@ -86,9 +86,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Messenger login(UserDto userDto) {
-        User user = repository.findByUsername(userDto.getUsername());
-        String token = jwtProvider.createToken(entityToDto(user));
-        boolean flag = user.getPassword().equals(userDto.getPassword());
+        var user = repository.findByUsername(userDto.getUsername());
+        var token = jwtProvider.createToken(entityToDto(user));
+        var flag = user.getPassword().equals(userDto.getPassword());
         repository.modifyTokenById(token,user.getId());
         jwtProvider.printPayload(token);
 
@@ -119,9 +119,12 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Transactional
     @Override
-    public Messenger logout(String accessToken) {
-        repository.modifyTokenByToken(accessToken);
-        return Messenger.builder().build();
+    public Boolean logout(String accessToken) {
+        Long id = 0L;
+        String deletedToken = "";
+        repository.modifyTokenById(deletedToken,id);
+        return findById(id).get().getToken() == null;
     }
 }
