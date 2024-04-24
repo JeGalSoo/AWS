@@ -20,6 +20,7 @@ public class Board extends BaseEntity {
     private Long id;
     private String title;
     private String description;
+    private String content;
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Article> articles;
 
