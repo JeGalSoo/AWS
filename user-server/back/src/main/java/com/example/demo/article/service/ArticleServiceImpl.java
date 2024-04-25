@@ -21,17 +21,11 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Messenger save(ArticleDto article) {
-        Article newArticle = Article.builder()
-                .writer(User.builder()
-                        .username(article.getWriterId())
-                        .build())
-                .content(article.getDescription())
-                .board(Board.builder()
-                        .id(article.getBoardId())
-                        .build())
+        re.save(dtoToEntity(article));
+        return Messenger.builder()
+                .message("SUCCESS")
+                .id(article.getBoardId())
                 .build();
-        if(existsById(article.getId()))re.save(newArticle);
-        return new Messenger();
     }
 
     @Override
@@ -47,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleDto> findAll() {
-        return re.findAll().stream().map(i->entityToDto(i)).toList();
+        return re.findAllByOrderByIdDesc().stream().map(i->entityToDto(i)).toList();
     }
 
     @Override

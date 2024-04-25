@@ -11,16 +11,15 @@ import { getAllBoards } from "@/app/component/board/service/board-slice";
 import Columns from "@/app/component/articles/columns";
 import Link from "next/link";
 import { PG } from "@/redux/common/enums/PG";
-import { findAllArticles } from "@/redux/features/articles/article.service";
-import { findArticleById } from "@/app/component/articles/service/article.service";
-import { getArticleById } from "@/app/component/articles/service/article-slice";
+import { findAllArticles, findArticleById } from "@/app/component/articles/service/article.service";
+import { getAllArticles, getArticleById } from "@/app/component/articles/service/article-slice";
 import ArticleColumns from "@/app/component/articles/module/columns";
 import MoveButton from "@/app/atoms/button/MoveButton";
 
 
 const ArticleListPage: NextPage = (props:any) => {
   const dispatch = useDispatch()
-  const article:[] = useSelector(getArticleById)
+  const article:[] = useSelector(getAllArticles)
 
   if(article !== undefined){
       console.log('allUser is not undefined')
@@ -31,8 +30,8 @@ const ArticleListPage: NextPage = (props:any) => {
   const newArticle =()=>{}
 
   useEffect(()=>{
-    console.log(props.params.id)
-      dispatch(findArticleById(props.params.id))
+    console.log('여기는 page'+props.params.id)
+      dispatch(findAllArticles(props.params.id))
   },[])
 
     
@@ -56,6 +55,8 @@ const ArticleListPage: NextPage = (props:any) => {
         checkboxSelection
         disableRowSelectionOnClick
       />}
+      <td><button>수정</button></td>
+      <td><button>삭제</button></td>
     </Box>
     </div>
     </>)

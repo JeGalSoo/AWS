@@ -62,7 +62,7 @@ export default function BoardDetailPage(props:any) {
       />}
       <button type="reset" className="cancelbtn">Cancel</button>
       <button type="reset" className="cancelbtn" onClick={jclick}>수정</button>
-      <button type="submit" className="signupbtn" onClick={dclick}>삭제</button>
+      <button type="submit" className="signupbtn" onClick={dclick}>틸퇴</button>
     </div>
     {/* <span>id</span> {props.params.id}<br/>
     <span>아이디 : {user.username}</span><br/>

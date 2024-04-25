@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Boolean logout(String accessToken) {
-        Long id = 0L;
+        Long id = 4L;
         String deletedToken = "";
         repository.modifyTokenById(deletedToken,id);
         return findById(id).get().getToken() == null;

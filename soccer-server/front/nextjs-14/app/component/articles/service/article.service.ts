@@ -4,16 +4,7 @@ import { findAllArticlesAPI, findArticleByIdAPI, saveAPI } from "./article-api";
 
 export const findAllArticles: any = createAsyncThunk(
     'articles/findAllArticles',
-    async (page: number)=>{
-        console.log('findAllArticles page : '+ page)
-        const data:any = await  findAllArticlesAPI(1);
-
-        const {message, result}:any = data
-        // console.log('----- API 를 사용한 경우 -----')
-        // console.log('message : '+ message)
-        // console.log(JSON.stringify(result))
-        return data
-    }
+    async (page)=>await  findAllArticlesAPI(page)
 )
 
 export const findArticleById: any = createAsyncThunk(
@@ -30,8 +21,8 @@ export const findArticleById: any = createAsyncThunk(
     }
 )
 
-export const saveUser:any = createAsyncThunk(
-    'user/saveUser', 
+export const saveArticle:any = createAsyncThunk(
+    'articles/saveArticle', 
     async (article:any) => {
         const data:any = await saveAPI(article)
         return data

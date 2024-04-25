@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 public class ArticleDto {
     private Long id;
     private String title;
-    private String description;
-    private String writerId;
+    private String content;
+    private Long writerId;
     private Long boardId;
     private LocalDateTime regDate;
     private LocalDateTime modDate;

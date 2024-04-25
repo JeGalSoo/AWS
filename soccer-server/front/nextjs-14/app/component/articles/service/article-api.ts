@@ -1,6 +1,7 @@
+import AxiosConfig from "@/redux/common/configs/axios-config"
 import instance from "../../common/configs/axios-config"
 
-export const findAllArticlesAPI = async (page: number) =>{
+export const findAllArticlesAPI = async (page:any) =>{
     try{
         const response = await instance().get('/articles/list',{
             params: {page, limit: 10}
@@ -14,6 +15,7 @@ export const findAllArticlesAPI = async (page: number) =>{
 }
 
 export const findArticleByIdAPI = async (id: number) =>{
+    console.log('여기는 api'+id)
     try{
         const response = await instance().get('/articles/detail',{
             params: {id}
@@ -26,10 +28,11 @@ export const findArticleByIdAPI = async (id: number) =>{
 }
 
 
-export const saveAPI = async (props: any) =>{
+export const saveAPI = async (articles: any) =>{
     try{
-        const response = await instance().post('/articles/save',props)
-        console.log(props)
+        const response = await instance().post('/articles/save',articles)
+        console.log(JSON.stringify(articles))
+        console.log('1111111111111111111'+articles)
         return response.data
     }catch(error){
         console.log(error)

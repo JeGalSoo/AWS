@@ -28,7 +28,16 @@ export default function ArticleColumns(): GridColDef[]{
             headerName: '제목',
             renderCell: ({row}:CellType) =>  <Typography textAlign="center" sx={{fontSize:"1.5rem"}}> 
              <Link href={`${PG.ARTICLE}/detail/${row.id}`}>{row.title}</Link></Typography>
-            },                       
+            }, 
+            {
+                flex: 0.04,
+                minWidth: 30,
+                sortable: false,
+                field: 'content',
+                headerName: '제목',
+                renderCell: ({row}:CellType) =>  <Typography textAlign="center" sx={{fontSize:"1.5rem"}}> 
+                 <Link href={`${PG.ARTICLE}/detail/${row.id}`}>{row.content}</Link></Typography>
+                }, 
         {
             flex: 0.04,
             minWidth: 30,
@@ -60,7 +69,15 @@ export default function ArticleColumns(): GridColDef[]{
                     field: 'boardId',
                     headerName: '등록일',
                     renderCell: ({row}:CellType) =>  <Typography textAlign="center" sx={{fontSize:"1.5rem"}}>  {row.boardId}</Typography>
-                    }
+                    },
+                    {
+                        flex: 0.04,
+                        minWidth: 30,
+                        sortable: false,
+                        field: 'delete',
+                        headerName: '삭제',
+                        renderCell: ({row}:CellType) =>  <Typography textAlign="center" sx={{fontSize:"1.5rem"}}>  삭제</Typography>
+                        },
     ]
 
 }

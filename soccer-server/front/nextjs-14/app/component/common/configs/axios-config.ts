@@ -1,4 +1,3 @@
-import AxiosConfig from '@/redux/common/configs/axios-config'
 import { ConstructionOutlined } from '@mui/icons-material'
 import axios, { AxiosInstance } from 'axios'
 import { Console } from 'console'
@@ -14,6 +13,7 @@ import { parseCookies } from 'nookies'
 //         }
 //     }
 // }
+
 export default function instance(){
 const instance = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_URL})
 setInterceptor(instance)

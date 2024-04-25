@@ -51,6 +51,7 @@ public class ArticleController {
 
     @GetMapping( path = "/detail")
     public ResponseEntity<List<ArticleDto>> findAllByBoarId(@RequestParam Long id){
+        log.info("여기입니다여기"+String.valueOf(id));
         return ResponseEntity.ok(service.findAllByBoardId(id));
     }
 
