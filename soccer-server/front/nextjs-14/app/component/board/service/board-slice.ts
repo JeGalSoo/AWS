@@ -48,7 +48,9 @@ export const boardSlice = createSlice({
   
     }
 })
-export const getAllBoards = (state: any) => state.board.array;
+export const getAllBoards = (state: any) => {
+    console.log('여기는 슬라이스'+JSON.stringify(state.board.array))
+    return state.board.array}
 
 export const {} = boardSlice.actions
 

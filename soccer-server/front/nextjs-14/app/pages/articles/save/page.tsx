@@ -32,6 +32,7 @@ const RegisterPage:NextPage = ()=>{
 
 
 useEffect(()=>{
+  console.log('123123')
   dispatch(findAllBoards(1))
 },[])
 
@@ -52,7 +53,7 @@ useEffect(()=>{
               {/* {options.map((item,index)=>(
                 <option key={item.boardId} title={item.title}>{item.content}</option>
               ))} */}
-              {allBoards.map((a:any)=>(<option key={a.boardId} title={a.title} value={a.id} >{a.content}</option>))}
+              {allBoards.map((a:any)=>(<option key={a.boardId} title={a.title} value={a.id} >{a.title}</option>))}
           </select>
       </form>
       <div className="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">

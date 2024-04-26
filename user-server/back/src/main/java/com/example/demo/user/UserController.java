@@ -38,6 +38,7 @@ public class UserController {
 
     @GetMapping( path = "/detail")
     public ResponseEntity<Optional<UserDto>> findById(@RequestParam Long id){
+        log.info(String.valueOf(id));
         return ResponseEntity.ok(service.findById(id));
     }
 

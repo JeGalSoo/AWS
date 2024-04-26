@@ -31,7 +31,7 @@ const ArticleListPage: NextPage = (props:any) => {
 
   useEffect(()=>{
     console.log('여기는 page'+props.params.id)
-      dispatch(findAllArticles(props.params.id))
+      dispatch(findArticleById(props.params.id))
   },[])
 
     

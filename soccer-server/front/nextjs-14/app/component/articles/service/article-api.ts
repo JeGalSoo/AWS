@@ -39,3 +39,17 @@ export const saveAPI = async (articles: any) =>{
         return error
     }   
 }
+
+export const deleteAPI = async (id: any) =>{
+    try{
+        const response = await instance().delete('/articles/delete',{
+        params:{id}
+    })
+
+        console.log('1111111111111111111'+id)
+        return response.data
+    }catch(error){
+        console.log(error)
+        return error
+    }   
+}

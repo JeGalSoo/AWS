@@ -1,21 +1,33 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { PG } from '@/redux/common/enums/PG';
 import LinkButton, { linkButtonTitles } from '@/app/atoms/button/LinkButton';
 import Link from 'next/link';
 import { destroyCookie, parseCookies } from 'nookies';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../users/service/user.service';
+import { jwtDecode } from 'jwt-decode';
 
 const pages = [/*'회원가입','로그인',*/ '카운터', '게시판목록', '게시글목록', '사용자목록'];
 const rou = [PG.USER + "/join", PG.USER + "/login"];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+interface decodeType{
+  iss? : string
+  exp? : string
+  sub? : string
+  username?:string
+  name?:string
+  job? : string
+  id?:number
+}
+
 
 function Header() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [showProfile, setShowProfile] = useState(false)
+  const decodeData:decodeType = jwtDecode<any>(parseCookies().accessToken)
 
   useEffect(() => {
     if (parseCookies().accessToken) {
@@ -37,6 +49,11 @@ function Header() {
         console.log('logout 실행에서 에러가 발생함' + err)
       })
   }
+
+  const myPageHandler = () => {
+    router.push(`${PG.USER}/detail/${decodeData.id}`)
+  }
+
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -76,9 +93,9 @@ function Header() {
       </button>}
       {showProfile &&
         <div className="flex px-4 py-3 float-end">
-          <span className="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-          <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 mx-5">name@flowbite.com</span>
-          <span className="block text-sm  text-gray-500 truncate dark:text-gray-400" onClick={logoutHandler}><a href='#'></a> Sign out </span> 
+          <span className="block text-sm text-gray-900 dark:text-white">{decodeData.username}</span>
+          <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 mx-5" onClick={myPageHandler}>마이페이지</span>
+          <span className="block text-sm  text-gray-500 truncate dark:text-gray-400" onClick={logoutHandler}><a href='#'></a> Logout </span> 
         </div>
       }
       <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">

@@ -1,21 +1,15 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react"
-import axios from 'axios';
+import { useRef, useState } from "react"
 import Link from "next/link";
 import './globals.css'
-import { Button, Input } from "@mui/material";
 import { NextPage } from "next";
 import { PG } from "@/redux/common/enums/PG";
-import { API } from "@/redux/common/enums/API";
-import AxiosConfig from "./component/common/configs/axios-config";
 import { existId, loginUser } from "./component/users/service/user.service";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { getAuth, getExistId } from "./component/users/service/user.slice";
 import { useRouter } from "next/navigation";
 import { IUser } from "./component/users/model/user";
-import nookies, { parseCookies, destroyCookie, setCookie } from 'nookies';
+import { parseCookies, setCookie } from 'nookies';
 import { jwtDecode } from "jwt-decode";
 
 
@@ -23,8 +17,6 @@ const SERVER = 'http://localhost:8080'
 const HomePage: NextPage = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch()
-  const logindata = useSelector(getAuth)
-  const existdata = useSelector(getExistId)
   const [isWrongId, setIsWrongId] = useState('')
   const [isWrongPw, setIsWrongPw] = useState('')
   const [isCheckId, setIsCheckId] = useState('')
@@ -59,15 +51,15 @@ const HomePage: NextPage = () => {
   }
 
   const handlePassword = (e: any) => {
-    const PW_CHECK = /^[0-9]$/g
+    // const PW_CHECK = /^[0-9]$/g
     // const PW_CHECK = /^[a-zA-Z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]+[a-zA-Z\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]{5,19}$/g;
-    if (PW_CHECK.test(e.target.value)) {
+    // if (PW_CHECK.test(e.target.value)) {
       setUser({
         ...user, password: e.target.value
       })
-    } else {
-      setIsWrongPw("true")
-    }
+    // } else {
+    //   setIsWrongPw("true")
+    // }
   }
 
 

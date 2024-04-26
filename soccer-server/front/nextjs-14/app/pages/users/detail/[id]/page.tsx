@@ -1,73 +1,141 @@
 'use client'
-
-import AxiosConfig from "@/app/component/common/configs/axios-config";
-import UserColumns, { UserByIdColumns } from "@/app/component/users/module/user-columns";
-import { modifyUser } from "@/app/component/users/service/user.service";
-import { findUserById } from "@/app/component/users/service/user.service";
-import   { getById, jobHandler, nameHandler,  phoneHandler, userSlice } from "@/app/component/users/service/user.slice";
-import { API } from "@/redux/common/enums/API";
+import { useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { destroyCookie } from "nookies";
+import { findUserById, logout, modifyUser } from "@/app/component/users/service/user.service";
+import { IUser } from "@/app/component/users/model/user";
 import { PG } from "@/redux/common/enums/PG";
-import { DataGrid } from "@mui/x-data-grid/DataGrid";
-import axios from "axios";
-import router from "next/router";
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
+import { getById } from "@/app/component/users/service/user.slice";
+import { Typography12 } from "@/app/component/common/style/ceil";
 
-export default function BoardDetailPage(props:any) {
-    const dispatch = useDispatch()
-    const user = useSelector(getById)
-    const modifydata = dispatch(nameHandler(user))
-
-    
-    if(user !== undefined){
-        console.log('allUser is not undefined')
-        console.log(user)
-    }else{
-        console.log('allUser is undefined')
+export default function UserPage(props: any) {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const userInfo = useSelector(getById);
+  useEffect(() => {
+    if (props.params.id != 0) {
+        console.log('여기는 디테일페이지 처음 : '+props.params.id)
+      dispatch(findUserById(props.params.id))
     }
+  }, [])
+  const handleCancel = () => {
+    alert("회원 정보 수정을 취소합니다.")
+    router.back();
+  }
+  const onSubmit=(user: IUser)=>{
+    dispatch(modifyUser(user))
+      .then((res: any) => {
+        console.log(res.payload)
+        if(res?.payload==='SUCCESS'){
+          alert("회원 정보 수정 완료");
+          router.push(`${PG.BOARD}/list`);
+        }else if(res?.payload==='FAILURE'){
+          alert("회원 정보 수정 실패");
+        }
+      })
+      .catch((error: any) => {
+      }).finally(()=>{
+        location.reload();
+      });
+  }
 
-    const url1=`${API.SERVER}/modify`
-    const url=`${API.SERVER}/delete/${props.params.id}`
-    const dclick = () => {
-        alert("삭제")
-        axios.delete(url,AxiosConfig())
-            .then(res => { 
-                alert(JSON.stringify(res.data))
-                router.push(PG.USER+"/member") 
-            })     
-    }
-
-    const jclick = () => {
-        dispatch(modifydata)
-        dispatch(modifyUser(user))
-        console.log(user)
-        axios.post(url1,user,AxiosConfig())
-    }
-    
-    useEffect(() => {
-        dispatch(findUserById(props.params.id))
-    }, [])
-
-
-    return(<>
-    <h2>게시판 상세</h2>
-    {props.params.id}번 게시판 상세<br/>
-    <div style={{ height: 400, width: "100%" }}>
-      {user && <DataGrid
-        rows={[user]}
-        columns={UserByIdColumns()}
-        pageSizeOptions={[5, 10, 20]}
-        checkboxSelection
-        
-      />}
-      <button type="reset" className="cancelbtn">Cancel</button>
-      <button type="reset" className="cancelbtn" onClick={jclick}>수정</button>
-      <button type="submit" className="signupbtn" onClick={dclick}>틸퇴</button>
-    </div>
-    {/* <span>id</span> {props.params.id}<br/>
-    <span>아이디 : {user.username}</span><br/>
-    <span>이름 : {}</span> <br/>
-    <span>전화번호 : {}</span> <br/>
-    <span>직업 : {}</span> */}
-    </>)
+  const handleWithDrawal = () => {
+    dispatch(findUserById(props.params.id)).
+      then((res: any) => {
+        console.log(res.payload)
+        if (res.payload === 'SUCCESS') {
+          alert('회원 탈퇴 완료');
+          dispatch(logout())
+            .then((res: any) => {
+              destroyCookie(null, 'accessToken')
+              console.log('destroy 쿠기 후: showProfile:false');
+              router.push('/');
+            })
+        } else {
+          alert('회원 탈퇴 실패');
+        }
+      })
+  }
+  return (
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className=" max-w-md mx-auto mb-10 mt-10">
+        <label htmlFor="large" className="block mb-2 text-base font-medium text-gray-900 dark:text-white">Large select</label>
+        <div className="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
+          {Typography12('회원 정보 수정', "1.5rem")}
+          <input
+            {...register('id')}
+            type="hidden"
+            value={props.params.id} />
+          <div className="username-wrapper">
+            <input
+              {...register('username')}
+              className="username mt-2 bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
+              type="text"
+              value={userInfo.username} //----------------------------------------
+              readOnly
+            />
+            <span className="hover-message">Hover message here</span>
+          </div>
+          <input
+            {...register('password', {maxLength: 20,required:true })}
+            className="password bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
+            placeholder="Password"
+            type="text"
+            name="password"
+            defaultValue={userInfo.password} //---------------------------------------
+            />
+          <input
+            {...register('name', {maxLength: 20, required:true })}
+            className="name bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
+            placeholder="Name"
+            type="text"
+            name="name"
+            defaultValue={userInfo.name} //-------------------------------------------
+             />
+          <input
+            {...register('phone', { maxLength: 20, required:true })}
+            className="phone bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
+            placeholder="Phone"
+            type="text"
+            name="phone"
+            defaultValue={userInfo.phone} //-------------------------------------------
+           />
+          <input
+            {...register('job', { maxLength: 20,required:true })}
+            className="job bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
+            placeholder="Job"
+            type="text"
+            name="job"
+            defaultValue={userInfo.job} //-------------------------------------------
+            />
+          {/* <!-- buttons --> */}
+          <div className="buttons flex justify-center gap-5">
+            <div className="btn justify-items-center overflow-hidden relative w-30 bg-white text-blue-500 p-3 px-4 rounded-xl font-bold uppercase -- behtmlFore:block behtmlFore:absolute behtmlFore:h-full behtmlFore:w-1/2 behtmlFore:rounded-full
+          behtmlFore:bg-pink-400 behtmlFore:top-0 behtmlFore:left-1/4 behtmlFore:transition-transhtmlForm behtmlFore:opacity-0 behtmlFore:hover:opacity-100 hover:text-200 hover:behtmlFore:animate-ping transition-all duration-00
+          border border-gray-300 shadow-lg text-lg
+          hover:bg-blue-100 focus:shadow-outline focus:outline-none
+          "
+              onClick={handleCancel}>취소</div>
+            <input
+              type="submit" value="수정"
+              className="btn  overflow-hidden relative w-30 bg-white text-blue-500 p-3 px-4 rounded-xl font-bold uppercase -- behtmlFore:block behtmlFore:absolute behtmlFore:h-full behtmlFore:w-1/2 behtmlFore:rounded-full
+          behtmlFore:bg-pink-400 behtmlFore:top-0 behtmlFore:left-1/4 behtmlFore:transition-transhtmlForm behtmlFore:opacity-0 behtmlFore:hover:opacity-100 hover:text-200 hover:behtmlFore:animate-ping transition-all duration-00
+          border border-gray-300 shadow-lg text-lg
+          hover:bg-blue-100 focus:shadow-outline focus:outline-none"
+            />
+          </div>
+        </div>
+        <div className="btn justify-items-center overflow-hidden relative ml-24 max-w-60 my-10 bg-blue-500 text-white text-center p-3 mx-16 rounded-xl text-xl font-bold uppercase -- behtmlFore:block behtmlFore:absolute behtmlFore:h-full behtmlFore:w-1/2 behtmlFore:rounded-full
+          behtmlFore:bg-pink-400 behtmlFore:top-0 behtmlFore:left-1/4 behtmlFore:transition-transhtmlForm behtmlFore:opacity-0 behtmlFore:hover:opacity-100 hover:text-200 hover:behtmlFore:animate-ping transition-all duration-00
+          border border-gray-300 shadow-lg hover:bg-blue-400 focus:shadow-outline focus:outline-none"
+          onClick={handleWithDrawal}>회원 탈퇴</div>
+      </form>
+    </>);
 }
+// export default RegisterPage
+//       <button type="reset" className="cancelbtn" onClick={jclick}>수정</button>
+//       <button type="submit" className="signupbtn" onClick={dclick}>틸퇴</button>

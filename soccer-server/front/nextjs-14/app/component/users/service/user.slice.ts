@@ -53,7 +53,7 @@ export const userSlice = createSlice({
 
         builder
         .addCase(findAllUsers.fulfilled, (state: any, {payload}: any) => {state.array = payload})
-        .addCase(findUserById.fulfilled, (state: any, {payload}: any) => {state.data = payload})
+        .addCase(findUserById.fulfilled, (state: any, {payload}: any) => {state.json = payload})
         .addCase(loginUser.fulfilled, (state: any, {payload}: any) => {state.auth = payload})
         .addCase(existId.fulfilled, (state: any, {payload}: any) => {state.data = payload})
         
@@ -62,8 +62,8 @@ export const userSlice = createSlice({
 export const getAllUsers = (state: any) =>(state.user.array)
 export const getById = (state:any) => {
     console.log('123123123')
-    console.log(JSON.stringify(state.user.data))
-    return state.user.data
+    console.log(JSON.stringify(state.user.json))
+    return state.user.json
 }
 export const getAuth = (state: any) => state.user.auth
 export const getExistId = (state: any) => {

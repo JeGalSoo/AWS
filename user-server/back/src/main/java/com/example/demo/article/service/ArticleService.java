@@ -31,7 +31,7 @@ public interface ArticleService extends CommandService<ArticleDto>, QueryService
                 .id(ent.getId())
                 .title(ent.getTitle())
                 .content(ent.getContent())
-                .writerId(Long.valueOf(ent.getWriter().getUsername()))
+                .writerId(ent.getWriter().getId())
                 .regDate(ent.getRegDate())
                 .modDate(ent.getModDate())
                 .build();

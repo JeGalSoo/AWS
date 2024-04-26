@@ -87,8 +87,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Messenger login(UserDto userDto) {
         var user = repository.findByUsername(userDto.getUsername());
+        log.info(user.getPassword());
+        log.info(userDto.getPassword());
         var token = jwtProvider.createToken(entityToDto(user));
         var flag = user.getPassword().equals(userDto.getPassword());
+        log.info(String.valueOf(flag));
         repository.modifyTokenById(token,user.getId());
         jwtProvider.printPayload(token);
 

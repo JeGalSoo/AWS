@@ -18,6 +18,7 @@ export const findByIdAPI = async (id: any) =>{
         const response = await instance().get('/users/detail',{
             params: {id}
         })
+        console.log('여기는 findbyid api : '+JSON.stringify(response.data))
         return response.data
     }catch(error){
         console.log(error)

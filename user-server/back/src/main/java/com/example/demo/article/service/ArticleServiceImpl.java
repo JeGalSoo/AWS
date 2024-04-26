@@ -22,6 +22,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Messenger save(ArticleDto article) {
         re.save(dtoToEntity(article));
+        System.out.printf("123123123123"+article.toString());
         return Messenger.builder()
                 .message("SUCCESS")
                 .id(article.getBoardId())
@@ -31,7 +32,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Messenger deleteById(Long id) {
         re.deleteById(id);
-        return new Messenger();
+        String message = findById(id).isEmpty()? "SUCCESS" : "FAIL";
+        return new Messenger().builder()
+                .message(message)
+                .build();
     }
 
     @Override
@@ -62,6 +66,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleDto> findAllByBoardId(Long id) {
-        return re.findAllByBoardId(id).stream().map(i->entityToDto(i)).toList();
+        return re.findAllByOrderByIdDesc().stream().map(i->entityToDto(i)).toList();
     }
 }

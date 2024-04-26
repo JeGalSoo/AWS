@@ -2,7 +2,7 @@
 # select * from boards;
 # select * from articles;
 # desc boards;
-
+#
 # insert into users (user_id, username, password, name, phone, job) values (1, 'Reuven', 1, 'Hammand', '642-988-9762', 'Staff Accountant III');
 # insert into users (user_id, username, password, name, phone, job) values (2, 'Mabelle', 2, 'Quesne', '895-497-2107', 'Web Designer I');
 # insert into users (user_id, username, password, name, phone, job) values (3, 'Sosanna', 3, 'Chawkley', '193-426-1012', 'Structural Engineer');
