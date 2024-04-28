@@ -32,8 +32,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Messenger deleteById(Long id) {
         re.deleteById(id);
-        String message = findById(id).isEmpty()? "SUCCESS" : "FAIL";
-        return new Messenger().builder()
+        String message = re.findById(id).isEmpty()? "SUCCESS" : "FAIL";
+        return Messenger.builder()
                 .message(message)
                 .build();
     }

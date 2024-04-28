@@ -6,6 +6,10 @@
 # insert into users (user_id, username, password, name, phone, job) values (1, 'Reuven', 1, 'Hammand', '642-988-9762', 'Staff Accountant III');
 # insert into users (user_id, username, password, name, phone, job) values (2, 'Mabelle', 2, 'Quesne', '895-497-2107', 'Web Designer I');
 # insert into users (user_id, username, password, name, phone, job) values (3, 'Sosanna', 3, 'Chawkley', '193-426-1012', 'Structural Engineer');
+# insert into users set user_id=5, username='Felita', password='5', name='Locock', phone='958-456-6583', job='Legal Assistant';
+# update users set user_id=5, username='Felita', password='5', name='Locock', phone='958-456-6583', job='Legal Assistant' where user_id=5;
+# update users set user_id=6, username='Bale', password='6', name='Manclark', phone='911-354-7903', job='Senior Financial Analyst' where user_id=6;
+
 # insert into users (user_id, username, password, name, phone, job) values (4, 'Gal', 4, 'Fozard', '708-148-2071', 'Help Desk Operator');
 # insert into users (user_id, username, password, name, phone, job) values (5, 'Felita', 5, 'Locock', '958-456-6583', 'Legal Assistant');
 # insert into users (user_id, username, password, name, phone, job) values (6, 'Bale', 6, 'Manclark', '911-354-7903', 'Senior Financial Analyst');

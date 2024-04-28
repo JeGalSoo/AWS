@@ -125,8 +125,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Boolean logout(String accessToken) {
-        Long id = 4L;
-        String deletedToken = "";
+        log.info(accessToken);
+        String data = jwtProvider.getId(accessToken);
+        System.out.println(data);
+        Long id = Long.valueOf(data);
+        String deletedToken = null;
         repository.modifyTokenById(deletedToken,id);
         return findById(id).get().getToken() == null;
     }

@@ -36,5 +36,5 @@ export const logout:any = createAsyncThunk(
 
 export const deleteById:any = createAsyncThunk(
     'user/logout',
-    async (id) => await deleteByIdAPI(id)
+    async (id) => {return await deleteByIdAPI(id)}
 )

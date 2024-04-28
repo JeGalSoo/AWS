@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteArticleById } from "../service/article.service";
 import { useState } from "react";
 import {useForm} from 'react-hook-form'
+import { getDeleteArticleById } from "../service/article-slice";
 
 interface CellType{
     row : ArticleColumn
@@ -16,11 +17,12 @@ export default function ArticleColumns(): GridColDef[]{
     const {register, handleSubmit, formState:{errors}} = useForm();
     const dispatch = useDispatch()
     const [id,setId] = useState(Number)
+    const deleteResult = useSelector(getDeleteArticleById)
 
     const handleDelete = ()=>{
-        console.log((id))
-        dispatch(deleteArticleById({id}))
+        console.log({handleSubmit})
     }
+    
    
     return [
         {
@@ -87,7 +89,16 @@ export default function ArticleColumns(): GridColDef[]{
                         sortable: false,
                         field: 'delete',
                         headerName: '삭제',
-                        renderCell: () => <button onClick={handleDelete}><Typography textAlign="center" sx={{fontSize:"1.5rem"}}>  삭제</Typography></button>
+                        renderCell: ({row}:CellType) => <button onClick={()=>{
+                            dispatch(deleteArticleById(row.id))
+                            console.log('페이지 입니다 :1111 '+deleteResult)
+                            if(deleteResult==='SUCCESS'){
+                                alert('삭제 완료')
+                            }else{
+                                alert('삭제 실패')
+                            }}
+                            }>
+                        <Typography textAlign="center" sx={{fontSize:"1.5rem"}}>  삭제</Typography></button>
                         },
     ]
 

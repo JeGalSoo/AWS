@@ -28,8 +28,7 @@ export const findByIdAPI = async (id: any) =>{
 
 export const deleteByIdAPI = async (id: any) =>{
     try{
-        const response = await instance().get('/users/delete',{
-            params: {id}
+        const response = await instance().delete(`/users/delete/${id}`,{
         })
         return response.data
     }catch(error){

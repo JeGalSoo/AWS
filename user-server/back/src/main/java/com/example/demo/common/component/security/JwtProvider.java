@@ -16,6 +16,7 @@ import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
@@ -82,6 +83,18 @@ public class JwtProvider {
         log.info("JWT 프로바이더 Access Token Header : "+header);
         log.info("JWT 프로바이더 Access Token Payload : "+payload);
         return payload;
+    }
+
+    public String getId(String accessToken){
+        accessToken = accessToken != null && accessToken.startsWith("Bearer ")?accessToken.substring(7):"undefined";
+        log.info("여기는 jwtprovicer입니다. : "+accessToken);
+        String[] accessToken1 = printPayload(accessToken).split(",");
+        for (int i=0; i<accessToken1.length; i++){
+            log.info("반복문 : "+accessToken1[i]);
+        }
+        accessToken1 = accessToken1[5].split(":");
+        log.info((accessToken1[1].substring(0,accessToken1[1].length()-1)));
+        return (accessToken1[1].substring(0,accessToken1[1].length()-1));
     }
 
 //    public JWTdecoder getAuthentication(String token){

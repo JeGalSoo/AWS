@@ -32,7 +32,7 @@ export const saveArticle:any = createAsyncThunk(
 export const deleteArticleById:any = createAsyncThunk(
     'articles/saveArticle', 
     async (id:any) => {
-        const data:any = await deleteAPI(id.id)
+        const data:any = await deleteAPI(id)
         return data
     }
 )

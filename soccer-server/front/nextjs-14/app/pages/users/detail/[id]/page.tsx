@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { destroyCookie } from "nookies";
-import { findUserById, logout, modifyUser } from "@/app/component/users/service/user.service";
+import { deleteById, findUserById, logout, modifyUser } from "@/app/component/users/service/user.service";
 import { IUser } from "@/app/component/users/model/user";
 import { PG } from "@/redux/common/enums/PG";
 import { getById } from "@/app/component/users/service/user.slice";
@@ -44,21 +44,17 @@ export default function UserPage(props: any) {
   }
 
   const handleWithDrawal = () => {
-    dispatch(findUserById(props.params.id)).
+    dispatch(deleteById(props.params.id)).
       then((res: any) => {
-        console.log(res.payload)
-        if (res.payload === 'SUCCESS') {
-          alert('회원 탈퇴 완료');
-          dispatch(logout())
-            .then((res: any) => {
-              destroyCookie(null, 'accessToken')
-              console.log('destroy 쿠기 후: showProfile:false');
-              router.push('/');
-            })
-        } else {
+        console.log(res.payload.message)
+        if (res.payload.message === 'SUCCESS') {
+          alert('회원 탈퇴 완료')
+          destroyCookie(null, 'accessToken')
+          router.push('/');
+            } else {
           alert('회원 탈퇴 실패');
         }
-      })
+  })
   }
   return (
     <>
@@ -72,7 +68,7 @@ export default function UserPage(props: any) {
             value={props.params.id} />
           <div className="username-wrapper">
             <input
-              {...register('username')}
+              {...register('username',{required:true})}
               className="username mt-2 bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
               type="text"
               value={userInfo.username} //----------------------------------------

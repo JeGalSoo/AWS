@@ -55,8 +55,6 @@ const ArticleListPage: NextPage = (props:any) => {
         checkboxSelection
         disableRowSelectionOnClick
       />}
-      <td><button>수정</button></td>
-      <td><button>삭제</button></td>
     </Box>
     </div>
     </>)

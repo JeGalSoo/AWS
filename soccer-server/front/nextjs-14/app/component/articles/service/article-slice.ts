@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { createSlice } from "@reduxjs/toolkit";
 import { IArticle } from '../model/article';
 import { initialState } from './article-init';
-import { findAllArticles, findArticleById } from './article.service';
+import { deleteArticleById, findAllArticles, findArticleById } from './article.service';
 
 interface IAuth{
     id?: number,
@@ -13,12 +13,12 @@ interface IAuth{
     boardId?: string,
     regDate?: string,
     modDate?: string
+    message?: string
 }
 
 interface userState {
     array? : Array<IAuth>,
-    json? : IAuth,
-    auth?: IAuth
+    json? : IAuth
 }
 
 
@@ -54,6 +54,7 @@ export const articleSlice = createSlice({
         builder
         .addCase(findAllArticles.fulfilled, handleFulfilled)
         .addCase(findArticleById.fulfilled, (state: any, {payload}: any) => {state.array = payload})
+        .addCase(deleteArticleById.fulfilled, (state: any, {payload}: any) => {state.json = payload})
   
     }
 })
@@ -67,6 +68,11 @@ export const getArticleById = (state: any) => {
     console.log('------------------ Before useSelector ---------------')
     console.log(JSON.stringify(state.article.array))
     return state.article.array;
+}
+export const getDeleteArticleById = (state: any) => {
+    console.log('------------------ Before useSelector ---------------')
+    console.log('여기는 슬라이스입니다 : '+state.article.json)
+    return state.article.json;
 }
 
 export const {} = articleSlice.actions
