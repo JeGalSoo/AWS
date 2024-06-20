@@ -1,5 +1,5 @@
 spring:
-  application:
+  application:설정
     name: api
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

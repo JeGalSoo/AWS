@@ -44,7 +44,8 @@ public class JwtProvider {
                 .claim("job", userDto.getJob())
                 .claim("id", userDto.getId())
                 .compact();
-
+        log.info(String.valueOf(expiredDate));
+        log.info(String.valueOf(Date.from(expiredDate)));
         log.info("로그인성공으로 발급된 토큰 " + token);
         return token;
     }

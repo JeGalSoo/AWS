@@ -51,7 +51,7 @@ export const modifyByIdAPI = async (props: any) =>{
 
 export const loginAPI = async (data:any) => {
     try{
-        const response = await instance.post('/users/login',
+        const response = await instance.post('/auth/login',
             data,AxiosConfig())
         console.log(response.data)
         return response.data
@@ -63,7 +63,7 @@ export const loginAPI = async (data:any) => {
 
 export const existIdAPI = async (username:any) => {
     try{
-        const response = await instance.get('/users/check',{
+        const response = await instance.get('/auth/check',{
             params: {username}
         })
         console.log('테스트입니다'+response.data.message)

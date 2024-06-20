@@ -79,8 +79,8 @@ const HomePage: NextPage = () => {
       setCookie({}, 'token', logindata.token, { httpOnly: false, path: '/' })
       console.log('서버에서 넘어온 메시지' + parseCookies().message)
       console.log('서버에서 넘어온 토큰' + parseCookies().token)
-      console.log('토큰을 decode한 내용 : ' + JSON.stringify(jwtDecode<any>(parseCookies().token)))
-      // router.push(`${PG.BOARD}/list`)
+      // console.log('토큰을 decode한 내용 : ' + JSON.stringify(jwtDecode<any>(parseCookies().token)))
+      router.push(`${PG.BOARD}/list`)
     } else {
       console.log('LOGIN FAIL')
     }
